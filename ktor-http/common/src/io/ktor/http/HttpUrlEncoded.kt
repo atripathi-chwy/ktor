@@ -67,3 +67,9 @@ fun Parameters.formUrlEncodeTo(out: Appendable) {
         .flatMap { e -> if (e.value.isEmpty()) listOf(e.key to null) else e.value.map { e.key to it } }
         .formUrlEncodeTo(out)
 }
+
+fun ParametersBuilder.formUrlEncodeTo(out: Appendable) {
+    entries()
+        .flatMap { e -> if (e.value.isEmpty()) listOf(e.key to null) else e.value.map { e.key to it } }
+        .formUrlEncodeTo(out)
+}
