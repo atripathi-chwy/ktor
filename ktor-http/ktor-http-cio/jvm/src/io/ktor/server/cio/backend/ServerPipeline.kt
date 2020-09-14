@@ -87,7 +87,7 @@ public fun CoroutineScope.startServerConnectionPipeline(
 
             val response = ByteChannel()
 
-            val transferEncoding = request.headers["Transfer-Encoding"]
+            val transferEncoding = request.headers["Transfer-Encoding"]?.trim()
             val upgrade = request.headers["Upgrade"]
             val contentType = request.headers["Content-Type"]
             val http11 = request.version == "HTTP/1.1"
@@ -106,8 +106,8 @@ public fun CoroutineScope.startServerConnectionPipeline(
 
             try {
                 val contentLengthIndex = request.headers.find("Content-Length")
-                connectionOptions =
-                    ConnectionOptions.parse(request.headers["Connection"])
+                connectionOptions = ConnectionOptions.parse(request.headers["Connection"])
+
                 if (contentLengthIndex != -1) {
                     contentLength = request.headers.valueAt(contentLengthIndex).parseDecLong()
                     if (request.headers.find("Content-Length", contentLengthIndex + 1) != -1) {
