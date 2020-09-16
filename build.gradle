@@ -270,14 +270,14 @@ afterEvaluate {
         kotlinOptions.freeCompilerArgs += ["-XXLanguage:+InlineClasses"]
     }
 
-    task dokkaWebsite(type: dokka.getClass()) {
-        outputFormat = 'kotlin-website'
-        outputDirectory = "${rootProject.projectDir}/apidoc"
-
-        kotlinTasks { allCompileKotlinTasks }
-
-        reportUndocumented = false
-    }
+//    task dokkaWebsite(type: dokka.getClass()) {
+//        outputFormat = 'kotlin-website'
+//        outputDirectory = "${rootProject.projectDir}/apidoc"
+//
+//        kotlinTasks { allCompileKotlinTasks }
+//
+//        reportUndocumented = false
+//    }
 }
 
 if (project.hasProperty("enable-coverage")) {
