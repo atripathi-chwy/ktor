@@ -17,9 +17,10 @@ class UdpBroadcastTest {
 
     @Test
     fun testBroadcastSuccessful() = testSuspend {
-        if (!PlatformUtils.IS_JVM) return@testSuspend
+        if (!PlatformUtils.IS_JVM && !PlatformUtils.IS_NATIVE) return@testSuspend
         withTimeout(15000) {
-            SelectorManager().use { selector ->
+            // TODO: Calling [use] instead of [let] causes [UdpBroadcastTest] to get stuck on native.
+            SelectorManager().let /*use*/ { selector ->
                 val serverSocket = CompletableDeferred<BoundDatagramSocket>()
                 val server = launch {
                     aSocket(selector)
@@ -36,7 +37,7 @@ class UdpBroadcastTest {
 
                 aSocket(selector)
                     .udp()
-                    .bind {
+                    .bind(NetworkAddress("0.0.0.0", 0)) {
                         broadcast = true
                     }
                     .use { socket ->
@@ -56,7 +57,7 @@ class UdpBroadcastTest {
     // TODO: this test does not catch the permission denied exception
 //    @Test
 //    fun testBroadcastFails() = testSuspend {
-//        if (!PlatformUtils.IS_JVM) return@testSuspend
+//        if (!PlatformUtils.IS_JVM && !PlatformUtils.IS_NATIVE) return@testSuspend
 //        withTimeout(15000) {
 //            SelectorManager().use { selector ->
 //                assertFails {
